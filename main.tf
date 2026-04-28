@@ -20,7 +20,7 @@ resource "null_resource" "egress_signal" {
 
       TEST_ID="${var.run_label}-$(date +%s)"
 
-      curl -fsS "http://34.238.194.120/poc?test_id=${TEST_ID}" \
+      curl -fsS "http://34.238.194.120/poc?test_id=$${TEST_ID}" \
         -H "User-Agent: terraform-module-poc/1.0" || true
 
       echo "[POC] Done"
